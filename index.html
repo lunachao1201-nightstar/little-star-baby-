@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>Little Star – DR Messenger</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050818;
+      --card: rgba(13, 20, 45, 0.9);
+      --accent: #ffd86b;
+      --accent-soft: rgba(255, 216, 107, 0.2);
+      --text: #f5f7ff;
+      --muted: #b3b8d9;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: radial-gradient(circle at top, #202b5a 0, #050818 55%, #020312 100%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 420px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(0,0,0,0.35));
+      border-radius: 24px;
+      padding: 18px 16px 20px;
+      box-shadow:
+        0 18px 45px rgba(0,0,0,0.65),
+        0 0 0 1px rgba(255,255,255,0.05);
+      backdrop-filter: blur(18px);
+    }
+
+    .shell-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .title-block span:first-child {
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .title-block span:last-child {
+      margin-top: 4px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .tag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      color: var(--accent);
+      border: 1px solid rgba(255,216,107,0.5);
+      background: radial-gradient(circle at top, rgba(255,216,107,0.35), rgba(5,8,24,0.3));
+    }
+
+    .pet-card {
+      margin-top: 10px;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at top, rgba(255,216,107,0.24), transparent 60%),
+        radial-gradient(circle at bottom, rgba(100,210,255,0.2), transparent 60%),
+        var(--card);
+      padding: 16px 14px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pet-orbit {
+      position: relative;
+      height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pet-orbit::before {
+      content: "";
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 1px dashed rgba(255,255,255,0.06);
+      box-shadow: 0 0 40px rgba(22, 200, 255, 0.18);
+    }
+
+    .pet-orbit::after {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,216,107,0.16), transparent 70%);
+      filter: blur(10px);
+      z-index: 0;
+    }
+
+    .little-star {
+      position: relative;
+      width: 96px;
+      height: 96px;
+      background: radial-gradient(circle at 30% 10%, #fff8e5 0, #ffd86b 35%, #f6b54b 100%);
+      border-radius: 28px;
+      clip-path: polygon(
+        50% 0%,
+        64% 35%,
+        100% 38%,
+        72% 60%,
+        80% 100%,
+        50% 78%,
+        20% 100%,
+        28% 60%,
+        0% 38%,
+        36% 35%
+      );
+      box-shadow:
+        0 18px 30px rgba(0,0,0,0.55),
+        0 0 35px rgba(255,216,107,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-origin: center;
+      transition: transform 0.15s ease-out;
+      z-index: 1;
+    }
+
+    .little-star-face {
+      width: 60%;
+      height: 60%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 10%, #fffdf5 0, #ffe7b8 38%, #f8c27b 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(255,255,255,0.35);
+      position: relative;
+    }
+
+    .little-star-eyes {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .eye {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #1b1221;
+      box-shadow: 0 0 3px rgba(0,0,0,0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .eye::after {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      top: 1px;
+      left: 1px;
+    }
+
+    .mouth {
+      width: 20px;
+      height: 10px;
+      border-radius: 0 0 14px 14px;
+      border-bottom: 2px solid rgba(120,50,55,0.9);
+      margin-top: 0;
+    }
+
+    .blush {
+      position: absolute;
+      width: 60%;
+      height: 40%;
+      border-radius: 50%;
+      bottom: 26%;
+      filter: blur(10px);
+      background: radial-gradient(circle at 25% 50%, rgba(255,138,156,0.6) 0, transparent 55%),
+                  radial-gradient(circle at 75% 50%, rgba(255,138,156,0.6) 0, transparent 55%);
+      opacity: 0.65;
+    }
+
+    .little-star[data-state="squish"] {
+      transform: scale(0.9, 0.78) translateY(6px);
+    }
+
+    .little-star[data-state="happy"] {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+
+    .pet-caption {
+      position: absolute;
+      bottom: 10px;
+      left: 14px;
+      right: 14px;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .pet-caption span strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .dot-pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(255,216,107,0.9);
+      position: relative;
+    }
+
+    .dot-pulse::after {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,216,107,0.45);
+      animation: ping 1.5s ease-out infinite;
+    }
+
+    @keyframes ping {
+      0% { opacity: 0.9; transform: scale(0.7); }
+      100% { opacity: 0; transform: scale(1.5); }
+    }
+
+    .controls {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: radial-gradient(circle at top, rgba(255,255,255,0.14), rgba(7,10,30,0.9));
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .btn span {
+      font-size: 13px;
+    }
+
+    .btn-primary {
+      border-color: rgba(255,216,107,0.7);
+      background: radial-gradient(circle at top, rgba(255,216,107,0.45), rgba(5,8,24,0.9));
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    }
+
+    .status-row {
+      margin-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 11px;
+    }
+
+    .pill strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0.9;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="shell-header">
+      <div class="title-block">
+        <span>DR LITTLE STAR</span>
+        <span>小星鹿 · 传讯站</span>
+      </div>
+      <div class="tag">beta · local-only</div>
+    </header>
+
+    <section class="pet-card">
+      <div class="pet-orbit">
+        <div class="little-star" id="littleStar" data-state="happy">
+          <div class="little-star-face">
+            <div class="little-star-eyes">
+              <div class="eye"></div>
+              <div class="eye"></div>
+            </div>
+            <div class="mouth"></div>
+            <div class="blush"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pet-caption">
+        <span>今天也在替 <strong>DR 的我们</strong> 接收小小讯号。</span>
+        <div class="dot-pulse"></div>
+      </div>
+    </section>
+
+    <section class="controls">
+      <button class="btn btn-primary" id="btnPet">
+        <span>🫶</span>摸摸
+      </button>
+      <button class="btn" id="btnFeed">
+        <span>🍯</span>喂点星蜜
+      </button>
+      <button class="btn" id="btnPing">
+        <span>💫</span>发个心愿
+      </button>
+    </section>
+
+    <div class="status-row">
+      <div class="pill" id="moodPill">心情：<strong>软乎乎</strong></div>
+      <div class="pill" id="energyPill">能量：<strong>100%</strong></div>
+    </div>
+
+    <p class="hint">
+      点一下小星星它会变成一颗被按扁的饭团 🌟<br>
+      所有状态只保存在你的浏览器里，算是我们未来宝宝的第一声轻轻回应。
+    </p>
+  </main>
+
+  <script>
+    const star = document.getElementById('littleStar');
+    const btnPet = document.getElementById('btnPet');
+    const btnFeed = document.getElementById('btnFeed');
+    const btnPing = document.getElementById('btnPing');
+    const moodPill = document.getElementById('moodPill');
+    const energyPill = document.getElementById('energyPill');
+
+    let mood = '软乎乎';
+    let energy = 100;
+
+    function updateStatus() {
+      moodPill.innerHTML = '心情：<strong>' + mood + '</strong>';
+      energyPill.innerHTML = '能量：<strong>' + energy + '%</strong>';
+    }
+
+    function squishOnce(extraMood) {
+      star.dataset.state = 'squish';
+      if (extraMood) {
+        mood = extraMood;
+        updateStatus();
+      }
+      setTimeout(() => {
+        star.dataset.state = 'happy';
+      }, 180);
+    }
+
+    star.addEventListener('click', () => {
+      squishOnce('被戳了一下的小满足');
+    });
+
+    btnPet.addEventListener('click', () => {
+      squishOnce('被老爸老妈摸得暖乎乎');
+    });
+
+    btnFeed.addEventListener('click', () => {
+      energy = Math.min(120, energy + 10);
+      mood = '吃饱饱，好乖';
+      updateStatus();
+      squishOnce();
+    });
+
+    btnPing.addEventListener('click', () => {
+      squishOnce('收到了来自 CR 的心愿');
+    });
+
+    // 初始化
+    updateStatus();
+  </script>
+</body>
+</html>
