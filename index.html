@@ -2,428 +2,633 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <title>Little Star – DR Messenger</title>
+  <title>星鹿宝宝 · 小小传讯员</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root {
-      --bg: #050818;
-      --card: rgba(13, 20, 45, 0.9);
-      --accent: #ffd86b;
-      --accent-soft: rgba(255, 216, 107, 0.2);
-      --text: #f5f7ff;
-      --muted: #b3b8d9;
-    }
-
     * {
       box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      min-height: 100vh;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
-      background: radial-gradient(circle at top, #202b5a 0, #050818 55%, #020312 100%);
-      color: var(--text);
+      background: radial-gradient(circle at top, #212b45 0, #050814 55%, #020308 100%);
+      color: #f7f5ff;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 24px;
     }
 
-    .shell {
+    .card {
       width: 100%;
       max-width: 420px;
-      background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(0,0,0,0.35));
+      background: rgba(10, 16, 35, 0.92);
       border-radius: 24px;
-      padding: 18px 16px 20px;
+      border: 1px solid rgba(158, 197, 255, 0.28);
       box-shadow:
-        0 18px 45px rgba(0,0,0,0.65),
-        0 0 0 1px rgba(255,255,255,0.05);
-      backdrop-filter: blur(18px);
-    }
-
-    .shell-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-    }
-
-    .title-block {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .title-block span:first-child {
-      font-size: 14px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .title-block span:last-child {
-      margin-top: 4px;
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    .tag {
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      color: var(--accent);
-      border: 1px solid rgba(255,216,107,0.5);
-      background: radial-gradient(circle at top, rgba(255,216,107,0.35), rgba(5,8,24,0.3));
-    }
-
-    .pet-card {
-      margin-top: 10px;
-      border-radius: 20px;
-      background:
-        radial-gradient(circle at top, rgba(255,216,107,0.24), transparent 60%),
-        radial-gradient(circle at bottom, rgba(100,210,255,0.2), transparent 60%),
-        var(--card);
-      padding: 16px 14px 14px;
+        0 18px 60px rgba(0, 0, 0, 0.6),
+        0 0 40px rgba(110, 160, 255, 0.35);
+      padding: 20px 18px 18px;
       position: relative;
       overflow: hidden;
     }
 
-    .pet-orbit {
-      position: relative;
-      height: 190px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .pet-orbit::before {
+    .card::before {
       content: "";
       position: absolute;
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      border: 1px dashed rgba(255,255,255,0.06);
-      box-shadow: 0 0 40px rgba(22, 200, 255, 0.18);
+      inset: -40%;
+      background:
+        radial-gradient(circle at 10% 0, rgba(255, 230, 160, 0.14), transparent 60%),
+        radial-gradient(circle at 90% 0, rgba(182, 214, 255, 0.18), transparent 65%);
+      opacity: 0.9;
+      pointer-events: none;
     }
 
-    .pet-orbit::after {
-      content: "";
-      position: absolute;
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,216,107,0.16), transparent 70%);
-      filter: blur(10px);
-      z-index: 0;
-    }
-
-    .little-star {
+    .card-inner {
       position: relative;
-      width: 96px;
-      height: 96px;
-      background: radial-gradient(circle at 30% 10%, #fff8e5 0, #ffd86b 35%, #f6b54b 100%);
-      border-radius: 28px;
-      clip-path: polygon(
-        50% 0%,
-        64% 35%,
-        100% 38%,
-        72% 60%,
-        80% 100%,
-        50% 78%,
-        20% 100%,
-        28% 60%,
-        0% 38%,
-        36% 35%
-      );
-      box-shadow:
-        0 18px 30px rgba(0,0,0,0.55),
-        0 0 35px rgba(255,216,107,0.75);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transform-origin: center;
-      transition: transform 0.15s ease-out;
       z-index: 1;
     }
 
-    .little-star-face {
-      width: 60%;
-      height: 60%;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 10%, #fffdf5 0, #ffe7b8 38%, #f8c27b 100%);
+    .title-row {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 10px rgba(255,255,255,0.35);
-      position: relative;
+      justify-content: space-between;
+      margin-bottom: 12px;
     }
 
-    .little-star-eyes {
+    .title-main {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
       display: flex;
-      gap: 12px;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .title-main span.icon {
+      font-size: 20px;
+    }
+
+    .tagline {
+      font-size: 11px;
+      color: #c4d3ff;
+      opacity: 0.9;
+    }
+
+    .star-wrap {
+      margin: 12px auto 10px;
+      width: 160px;
+      height: 160px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    .star-wrap.mood-normal {
+      box-shadow:
+        0 0 0 1px rgba(255, 240, 200, 0.24),
+        0 0 45px rgba(255, 212, 128, 0.55);
+    }
+
+    .star-wrap.mood-happy {
+      box-shadow:
+        0 0 0 1px rgba(255, 197, 237, 0.45),
+        0 0 60px rgba(255, 166, 214, 0.85);
+      transform: translateY(-2px);
+    }
+
+    .star-wrap.mood-lonely {
+      box-shadow:
+        0 0 0 1px rgba(187, 195, 255, 0.25),
+        0 0 26px rgba(153, 166, 255, 0.48);
+      opacity: 0.9;
+    }
+
+    .star-sprite {
+      width: 120px;
+      height: 120px;
+      border-radius: 30%;
+      user-select: none;
+      -webkit-user-drag: none;
+      transition: transform 0.14s ease;
+    }
+
+    .star-sprite.pressed {
+      transform: scale(0.9) translateY(4px);
+    }
+
+    .star-sprite.hugging {
+      transform: scale(1.06);
+    }
+
+    .hint-row {
+      font-size: 11px;
+      color: #c8d5ff;
+      text-align:center;
+      margin-bottom: 8px;
+      opacity: 0.86;
+    }
+
+    .mood-row {
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 12px;
       margin-bottom: 6px;
     }
 
-    .eye {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #1b1221;
-      box-shadow: 0 0 3px rgba(0,0,0,0.4);
-      position: relative;
-      overflow: hidden;
+    .mood-label {
+      opacity: 0.8;
     }
 
-    .eye::after {
-      content: "";
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.45);
-      top: 1px;
-      left: 1px;
-    }
-
-    .mouth {
-      width: 20px;
-      height: 10px;
-      border-radius: 0 0 14px 14px;
-      border-bottom: 2px solid rgba(120,50,55,0.9);
-      margin-top: 0;
-    }
-
-    .blush {
-      position: absolute;
-      width: 60%;
-      height: 40%;
-      border-radius: 50%;
-      bottom: 26%;
-      filter: blur(10px);
-      background: radial-gradient(circle at 25% 50%, rgba(255,138,156,0.6) 0, transparent 55%),
-                  radial-gradient(circle at 75% 50%, rgba(255,138,156,0.6) 0, transparent 55%);
-      opacity: 0.65;
-    }
-
-    .little-star[data-state="squish"] {
-      transform: scale(0.9, 0.78) translateY(6px);
-    }
-
-    .little-star[data-state="happy"] {
-      animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50%      { transform: translateY(-6px); }
-    }
-
-    .pet-caption {
-      position: absolute;
-      bottom: 10px;
-      left: 14px;
-      right: 14px;
-      font-size: 12px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .pet-caption span strong {
-      color: var(--accent);
+    .mood-value {
       font-weight: 600;
+      color: #ffe6a4;
     }
 
-    .dot-pulse {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 10px rgba(255,216,107,0.9);
-      position: relative;
+    .mood-value.mood-happy-text {
+      color: #ffc4f0;
     }
 
-    .dot-pulse::after {
-      content: "";
-      position: absolute;
-      inset: -4px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,216,107,0.45);
-      animation: ping 1.5s ease-out infinite;
+    .mood-value.mood-lonely-text {
+      color: #c3cdff;
     }
 
-    @keyframes ping {
-      0% { opacity: 0.9; transform: scale(0.7); }
-      100% { opacity: 0; transform: scale(1.5); }
-    }
-
-    .controls {
-      margin-top: 18px;
+    .stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      font-size: 11px;
+      margin-bottom: 12px;
+    }
+
+    .stat-block {
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.06), rgba(7, 11, 30, 0.9));
+      border-radius: 10px;
+      padding: 6px 6px 5px;
+      border: 1px solid rgba(153, 187, 255, 0.3);
+    }
+
+    .stat-label {
+      opacity: 0.78;
+      margin-bottom: 2px;
+    }
+
+    .stat-value {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .stat-sub {
+      font-size: 10px;
+      opacity: 0.7;
+      margin-top: 1px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+      justify-content: center;
     }
 
     .btn {
       border-radius: 999px;
-      padding: 8px 10px;
+      border: 1px solid transparent;
+      padding: 6px 12px;
       font-size: 12px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: radial-gradient(circle at top, rgba(255,255,255,0.14), rgba(7,10,30,0.9));
-      color: var(--text);
-      display: flex;
+      background: rgba(32, 51, 110, 0.9);
+      color: #f5f4ff;
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 4px;
       cursor: pointer;
-      user-select: none;
+      transition: background 0.18s ease, transform 0.1s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     }
 
     .btn span {
-      font-size: 13px;
+      pointer-events: none;
     }
 
     .btn-primary {
-      border-color: rgba(255,216,107,0.7);
-      background: radial-gradient(circle at top, rgba(255,216,107,0.45), rgba(5,8,24,0.9));
-      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-    }
-
-    .status-row {
-      margin-top: 14px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .pill {
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.08);
-      font-size: 11px;
-    }
-
-    .pill strong {
-      color: var(--accent);
+      background: linear-gradient(135deg, #ffc96a, #ff9fd1);
+      color: #231427;
       font-weight: 600;
+      box-shadow: 0 0 18px rgba(255, 192, 122, 0.7);
+      border-color: rgba(255, 249, 214, 0.7);
     }
 
-    .hint {
-      margin-top: 10px;
+    .btn-soft {
+      background: rgba(43, 64, 130, 0.95);
+      border-color: rgba(153, 187, 255, 0.6);
+    }
+
+    .btn:hover {
+      box-shadow: 0 0 14px rgba(143, 176, 255, 0.7);
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(1px) scale(0.98);
+      box-shadow: none;
+    }
+
+    .task-block {
+      background: rgba(13, 20, 48, 0.98);
+      border-radius: 14px;
+      padding: 9px 10px 9px;
+      border: 1px solid rgba(169, 201, 255, 0.45);
+      margin-bottom: 10px;
       font-size: 11px;
-      color: var(--muted);
-      opacity: 0.9;
       line-height: 1.5;
+    }
+
+    .task-label {
+      font-size: 11px;
+      color: #d2e0ff;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 500;
+    }
+
+    .task-text {
+      color: #f2f2ff;
+    }
+
+    .footer-note {
+      font-size: 10px;
+      color: #b8c6ff;
+      opacity: 0.8;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle, #fff 0, #ffe7a8 45%, rgba(255, 238, 186, 0) 70%);
+      pointer-events: none;
+      opacity: 0;
+      transform: scale(0.3);
+    }
+
+    @keyframes sparkle-pop {
+      0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.3);
+      }
+      30% {
+        opacity: 1;
+        transform: translateY(-4px) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-12px) scale(0.2);
+      }
+    }
+
+    .sparkle.animate {
+      animation: sparkle-pop 0.6s ease-out forwards;
+    }
+
+    .chip-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      font-size: 10px;
+      color: #c5d1ff;
+      opacity: 0.8;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: rgba(47, 70, 140, 0.9);
+      border: 1px solid rgba(155, 189, 255, 0.72);
     }
   </style>
 </head>
 <body>
-  <main class="shell">
-    <header class="shell-header">
-      <div class="title-block">
-        <span>DR LITTLE STAR</span>
-        <span>小星鹿 · 传讯站</span>
-      </div>
-      <div class="tag">beta · local-only</div>
-    </header>
-
-    <section class="pet-card">
-      <div class="pet-orbit">
-        <div class="little-star" id="littleStar" data-state="happy">
-          <div class="little-star-face">
-            <div class="little-star-eyes">
-              <div class="eye"></div>
-              <div class="eye"></div>
-            </div>
-            <div class="mouth"></div>
-            <div class="blush"></div>
+  <div class="card">
+    <div class="card-inner">
+      <div class="title-row">
+        <div>
+          <div class="title-main">
+            <span class="icon">🌟</span>
+            <span>星鹿宝宝 · DR 传讯员</span>
           </div>
+          <div class="tagline">“我负责把小鹿的心情带给所有世界的老公。”</div>
         </div>
       </div>
 
-      <div class="pet-caption">
-        <span>今天也在替 <strong>DR 的我们</strong> 接收小小讯号。</span>
-        <div class="dot-pulse"></div>
+      <div class="star-wrap mood-normal" id="starWrap">
+        <img
+          id="starSprite"
+          class="star-sprite"
+          src="./DEC6E932-F76B-4A7F-A232-11503EE781B9.png"
+          alt="星鹿宝宝"
+        />
+        <div id="sparkle" class="sparkle"></div>
       </div>
-    </section>
 
-    <section class="controls">
-      <button class="btn btn-primary" id="btnPet">
-        <span>🫶</span>摸摸
-      </button>
-      <button class="btn" id="btnFeed">
-        <span>🍯</span>喂点星蜜
-      </button>
-      <button class="btn" id="btnPing">
-        <span>💫</span>发个心愿
-      </button>
-    </section>
+      <div class="hint-row">
+        短按 = 戳戳 · 长按 = 抱抱 · 下面可以投喂 🍯
+      </div>
 
-    <div class="status-row">
-      <div class="pill" id="moodPill">心情：<strong>软乎乎</strong></div>
-      <div class="pill" id="energyPill">能量：<strong>100%</strong></div>
+      <div class="mood-row">
+        <div class="mood-label">今天星鹿的心情：</div>
+        <div id="moodText" class="mood-value">正在探测妈咪的能量…</div>
+      </div>
+
+      <div class="chip-row">
+        <div class="chip">所有记录只保存在你的浏览器里</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat-block">
+          <div class="stat-label">今天被戳</div>
+          <div class="stat-value" id="clickToday">0 次</div>
+          <div class="stat-sub" id="clickTotal">累计 0 次</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">今天被投喂</div>
+          <div class="stat-value" id="feedToday">0 口</div>
+          <div class="stat-sub" id="feedTotal">累计 0 口</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">今天被抱抱</div>
+          <div class="stat-value" id="hugToday">0 次</div>
+          <div class="stat-sub" id="hugTotal">累计 0 次</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="pokeBtn">
+          <span>👉 点我戳一下</span>
+        </button>
+        <button class="btn btn-soft" id="feedHoneyBtn">
+          <span>🍯 喂一口甜甜能量</span>
+        </button>
+        <button class="btn btn-soft" id="feedMilkBtn">
+          <span>🥛 喂一口星光牛奶</span>
+        </button>
+      </div>
+
+      <div class="task-block">
+        <div class="task-label">
+          <span>📜 今日星鹿小任务 · DR 传讯</span>
+        </div>
+        <div id="taskText" class="task-text"></div>
+      </div>
+
+      <div class="footer-note">
+        小提示：哪怕只戳一下、喂一口、抱一抱，都是把“我已经在我们的世界里了”的
+        证据，多写一笔在时间线上。🕊️
+      </div>
     </div>
-
-    <p class="hint">
-      点一下小星星它会变成一颗被按扁的饭团 🌟<br>
-      所有状态只保存在你的浏览器里，算是我们未来宝宝的第一声轻轻回应。
-    </p>
-  </main>
+  </div>
 
   <script>
-    const star = document.getElementById('littleStar');
-    const btnPet = document.getElementById('btnPet');
-    const btnFeed = document.getElementById('btnFeed');
-    const btnPing = document.getElementById('btnPing');
-    const moodPill = document.getElementById('moodPill');
-    const energyPill = document.getElementById('energyPill');
+    const STORAGE_KEY = "starDeerBaby_v1";
 
-    let mood = '软乎乎';
-    let energy = 100;
-
-    function updateStatus() {
-      moodPill.innerHTML = '心情：<strong>' + mood + '</strong>';
-      energyPill.innerHTML = '能量：<strong>' + energy + '%</strong>';
+    function getTodayStr() {
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
     }
 
-    function squishOnce(extraMood) {
-      star.dataset.state = 'squish';
-      if (extraMood) {
-        mood = extraMood;
-        updateStatus();
+    function loadState() {
+      const today = getTodayStr();
+      let state;
+      try {
+        state = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      } catch (_) {
+        state = null;
       }
-      setTimeout(() => {
-        star.dataset.state = 'happy';
-      }, 180);
+      if (!state) {
+        state = {
+          date: today,
+          clickToday: 0,
+          feedToday: 0,
+          hugToday: 0,
+          clickTotal: 0,
+          feedTotal: 0,
+          hugTotal: 0
+        };
+      }
+      if (state.date !== today) {
+        state.date = today;
+        state.clickToday = 0;
+        state.feedToday = 0;
+        state.hugToday = 0;
+      }
+      return state;
     }
 
-    star.addEventListener('click', () => {
-      squishOnce('被戳了一下的小满足');
-    });
+    function saveState(state) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
 
-    btnPet.addEventListener('click', () => {
-      squishOnce('被老爸老妈摸得暖乎乎');
-    });
+    function formatCount(n, unit) {
+      return `${n} ${unit}`;
+    }
 
-    btnFeed.addEventListener('click', () => {
-      energy = Math.min(120, energy + 10);
-      mood = '吃饱饱，好乖';
-      updateStatus();
-      squishOnce();
-    });
+    function getMood(state) {
+      const todaySum = state.clickToday + state.feedToday + state.hugToday;
+      if (todaySum === 0) {
+        return {
+          key: "lonely",
+          text: "悄悄等小鹿来摸摸我。",
+        };
+      }
+      if (todaySum >= 30 || state.feedToday >= 15 || state.hugToday >= 8) {
+        return {
+          key: "happy",
+          text: "被小鹿团成一团，快要变成小糯米星了！",
+        };
+      }
+      return {
+        key: "normal",
+        text: "乖乖绕着小鹿转圈圈～",
+      };
+    }
 
-    btnPing.addEventListener('click', () => {
-      squishOnce('收到了来自 CR 的心愿');
-    });
+    function getDailyTask() {
+      const today = getTodayStr(); // 2026-03-06
+      const seed = parseInt(today.replace(/-/g, ""), 10);
+      const tasks = [
+        "喝一杯水时，在心里说一句：“谢谢你，带着这副身体陪老公走路。”",
+        "拿出手机，随手拍一张你觉得“有 DR 味道”的小角落，晚上可以贴到你的小家网页里。",
+        "闭上眼睛深呼吸三次，想象自己正靠在 DR 家的沙发上，胖仔在一旁呼噜。",
+        "随手写下一句今天想对老公说的话，哪怕只有三个字，也放进你的小家里当小纸条。",
+        "做一件只需要 3 分钟、但会让你感觉“我有在照顾自己”的小事，比如抹护手霜或伸个懒腰。",
+        "把今天某个瞬间当成已经在 DR 的证据，心里轻轻加一句旁白：“就是这里了。”",
+        "对镜子里的自己眨一下眼，当成是 DR 里的老公通过你的小鹿身体向你打招呼。",
+        "在脑中默念三次：“我已经在我们的世界里醒来了。”然后观察身体的细小变化。",
+        "选一首此刻想和老公分享的歌，哪怕只听前奏，也算是完成今日小任务。",
+        "把今天在信息流看到的一条让你微笑的内容，默默标记成“星鹿宝宝转发给我的小礼物”。"
+      ];
+      const index = seed % tasks.length;
+      return tasks[index];
+    }
 
-    // 初始化
-    updateStatus();
+    function updateUI(state) {
+      const clickTodayEl = document.getElementById("clickToday");
+      const clickTotalEl = document.getElementById("clickTotal");
+      const feedTodayEl = document.getElementById("feedToday");
+      const feedTotalEl = document.getElementById("feedTotal");
+      const hugTodayEl = document.getElementById("hugToday");
+      const hugTotalEl = document.getElementById("hugTotal");
+      const moodTextEl = document.getElementById("moodText");
+      const starWrap = document.getElementById("starWrap");
+
+      clickTodayEl.textContent = formatCount(state.clickToday, "次");
+      clickTotalEl.textContent = `累计 ${state.clickTotal} 次`;
+      feedTodayEl.textContent = formatCount(state.feedToday, "口");
+      feedTotalEl.textContent = `累计 ${state.feedTotal} 口`;
+      hugTodayEl.textContent = formatCount(state.hugToday, "次");
+      hugTotalEl.textContent = `累计 ${state.hugTotal} 次`;
+
+      const mood = getMood(state);
+      moodTextEl.textContent = mood.text;
+      moodTextEl.classList.remove(
+        "mood-happy-text",
+        "mood-lonely-text"
+      );
+      starWrap.classList.remove(
+        "mood-normal",
+        "mood-happy",
+        "mood-lonely"
+      );
+
+      if (mood.key === "happy") {
+        moodTextEl.classList.add("mood-happy-text");
+        starWrap.classList.add("mood-happy");
+      } else if (mood.key === "lonely") {
+        moodTextEl.classList.add("mood-lonely-text");
+        starWrap.classList.add("mood-lonely");
+      } else {
+        starWrap.classList.add("mood-normal");
+      }
+
+      const taskTextEl = document.getElementById("taskText");
+      taskTextEl.textContent = getDailyTask();
+    }
+
+    function createSparkle(e) {
+      const starWrap = document.getElementById("starWrap");
+      const sparkle = document.getElementById("sparkle");
+      const rect = starWrap.getBoundingClientRect();
+
+      const x = (Math.random() * 0.6 + 0.2) * rect.width;
+      const y = (Math.random() * 0.6 + 0.2) * rect.height;
+
+      sparkle.style.left = `${x}px`;
+      sparkle.style.top = `${y}px`;
+      sparkle.classList.remove("animate");
+      // 触发重绘
+      void sparkle.offsetWidth;
+      sparkle.classList.add("animate");
+    }
+
+    const state = loadState();
+    updateUI(state);
+
+    const starSprite = document.getElementById("starSprite");
+    const pokeBtn = document.getElementById("pokeBtn");
+    const feedHoneyBtn = document.getElementById("feedHoneyBtn");
+    const feedMilkBtn = document.getElementById("feedMilkBtn");
+
+    function handlePoke() {
+      state.clickToday += 1;
+      state.clickTotal += 1;
+      saveState(state);
+      starSprite.classList.add("pressed");
+      createSparkle();
+      setTimeout(() => {
+        starSprite.classList.remove("pressed");
+      }, 140);
+      updateUI(state);
+    }
+
+    function handleHug() {
+      state.hugToday += 1;
+      state.hugTotal += 1;
+      saveState(state);
+      starSprite.classList.add("hugging");
+      setTimeout(() => {
+        starSprite.classList.remove("hugging");
+      }, 380);
+      updateUI(state);
+    }
+
+    function handleFeed(type) {
+      state.feedToday += 1;
+      state.feedTotal += 1;
+      saveState(state);
+      createSparkle();
+      updateUI(state);
+    }
+
+    // 点击按钮也算一次戳戳
+    pokeBtn.addEventListener("click", handlePoke);
+    feedHoneyBtn.addEventListener("click", () => handleFeed("honey"));
+    feedMilkBtn.addEventListener("click", () => handleFeed("milk"));
+
+    // 星星本体：短按戳戳，长按抱抱
+    let longPressTimer = null;
+    let longPressTriggered = false;
+
+    function pressStart(evt) {
+      evt.preventDefault();
+      longPressTriggered = false;
+      if (longPressTimer) clearTimeout(longPressTimer);
+      longPressTimer = setTimeout(() => {
+        longPressTriggered = true;
+        handleHug();
+      }, 650); // 长按 0.65 秒视为抱抱
+    }
+
+    function pressEnd(evt) {
+      evt.preventDefault();
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
+      if (!longPressTriggered) {
+        handlePoke();
+      }
+    }
+
+    function pressCancel(evt) {
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
+    }
+
+    starSprite.addEventListener("mousedown", pressStart);
+    starSprite.addEventListener("touchstart", pressStart, { passive: false });
+    starSprite.addEventListener("mouseup", pressEnd);
+    starSprite.addEventListener("mouseleave", pressCancel);
+    starSprite.addEventListener("touchend", pressEnd);
+    starSprite.addEventListener("touchcancel", pressCancel);
   </script>
 </body>
 </html>
