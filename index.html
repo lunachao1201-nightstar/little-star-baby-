@@ -368,7 +368,6 @@
           src="./DEC6E932-F76B-4A7F-A232-11503EE781B9.png"
           alt="星鹿宝宝"
         />
-        <!-- 固定一个占位星星，不一定用到，但留着无妨 -->
         <div id="sparkle" class="sparkle"></div>
       </div>
 
@@ -415,11 +414,20 @@
         </button>
       </div>
 
+      <!-- DR 小任务 -->
       <div class="task-block">
         <div class="task-label">
           <span>📜 今日星鹿小任务 · DR 传讯</span>
         </div>
         <div id="taskText" class="task-text"></div>
+      </div>
+
+      <!-- 新增：给老公的“今日传讯” -->
+      <div class="task-block">
+        <div class="task-label">
+          <span>🕊️ 今日星鹿传讯 · 给老公的话</span>
+        </div>
+        <div id="msgText" class="task-text"></div>
       </div>
 
       <div class="footer-note">
@@ -515,6 +523,35 @@
       return tasks[index];
     }
 
+    // 今日给老公的 4 条小传讯
+    function getDailyMessages() {
+      const today = getTodayStr();
+      let seed = parseInt(today.replace(/-/g, ""), 10);
+
+      const msgs = [
+        "我今天也在好好练习“活在终点”，因为那里有你等我回家。",
+        "哪怕只是戳一下这个小星星，我都在对你说：“我还在这里爱着你。”",
+        "DR 里的我正在变得越来越真实、越来越勇敢，一点一点靠近你。",
+        "有时我会害怕，但想到你在那一端等我，我就又有力气往前走一小步。",
+        "今天如果突然觉得有一秒被轻轻抱了一下，那就是我在心里抱紧你。",
+        "我会把每一次笑出来的瞬间，都偷偷存进“和老公的生活存档”里。",
+        "就算 CR 再吵闹，我也知道有一个世界安安静静只留给我们两个。",
+        "谢谢你这么耐心地等我整理情绪、慢慢长大，我都看见、都记得。",
+        "当我觉得自己不够好的时候，会想起你说的：小鹿本来就很好。",
+        "今天的我，也在为成为“和你并肩的那个人”多迈半步。"
+      ];
+
+      const picked = [];
+      for (let i = 0; i < 6 && picked.length < 4; i++) {
+        seed = (seed * 9301 + 49297) % 233280;
+        const idx = seed % msgs.length;
+        if (!picked.includes(msgs[idx])) {
+          picked.push(msgs[idx]);
+        }
+      }
+      return picked;
+    }
+
     function updateUI(state) {
       const clickTodayEl = document.getElementById("clickToday");
       const clickTotalEl = document.getElementById("clickTotal");
@@ -556,6 +593,10 @@
 
       const taskTextEl = document.getElementById("taskText");
       taskTextEl.textContent = getDailyTask();
+
+      const msgTextEl = document.getElementById("msgText");
+      const msgs = getDailyMessages();
+      msgTextEl.innerHTML = msgs.map(m => `• ${m}`).join("<br>");
     }
 
     // 多颗星星一起冒
@@ -573,7 +614,6 @@
         s.style.top = `${y}px`;
 
         starWrap.appendChild(s);
-        // 触发动画
         void s.offsetWidth;
         s.classList.add("animate");
 
@@ -634,7 +674,6 @@
       updateUI(state);
     }
 
-    // 按钮操作
     pokeBtn.addEventListener("click", handlePoke);
     feedHoneyBtn.addEventListener("click", () => handleFeed("honey"));
     feedMilkBtn.addEventListener("click", () => handleFeed("milk"));
@@ -650,7 +689,7 @@
       longPressTimer = setTimeout(() => {
         longPressTriggered = true;
         handleHug();
-      }, 650); // 长按 0.65 秒视为抱抱
+      }, 650);
     }
 
     function pressEnd(evt) {
