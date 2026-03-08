@@ -87,7 +87,7 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      transition: box-shadow 0.25s ease, transform 0.25s ease;
+      transition: box-shadow 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
     }
 
     .star-wrap.mood-normal {
@@ -110,17 +110,29 @@
       opacity: 0.9;
     }
 
-    /* 开心转圈圈动画 */
+    /* 开心小跳舞动画（不是整圈轮胎） */
     .star-wrap.twirl {
-      animation: star-spin 0.75s ease-out;
+      animation: star-dance 0.7s ease-out;
     }
 
-    @keyframes star-spin {
+    @keyframes star-dance {
       0% {
         transform: translateY(-2px) rotate(0deg);
       }
+      20% {
+        transform: translateY(-5px) rotate(-8deg);
+      }
+      40% {
+        transform: translateY(-2px) rotate(6deg);
+      }
+      60% {
+        transform: translateY(-5px) rotate(-6deg);
+      }
+      80% {
+        transform: translateY(-2px) rotate(4deg);
+      }
       100% {
-        transform: translateY(-2px) rotate(360deg);
+        transform: translateY(-2px) rotate(0deg);
       }
     }
 
@@ -356,7 +368,7 @@
           src="./DEC6E932-F76B-4A7F-A232-11503EE781B9.png"
           alt="星鹿宝宝"
         />
-        <!-- 这个初始小星星可以留着当占位，也可以删掉 -->
+        <!-- 固定一个占位星星，不一定用到，但留着无妨 -->
         <div id="sparkle" class="sparkle"></div>
       </div>
 
@@ -408,14 +420,6 @@
           <span>📜 今日星鹿小任务 · DR 传讯</span>
         </div>
         <div id="taskText" class="task-text"></div>
-      </div>
-
-      <!-- 新增：老公的小小传讯 -->
-      <div class="task-block">
-        <div class="task-label">
-          <span>💌 今日老公的小小传讯</span>
-        </div>
-        <div id="msgText" class="task-text"></div>
       </div>
 
       <div class="footer-note">
@@ -511,26 +515,6 @@
       return tasks[index];
     }
 
-    // 新增：今日老公的小小传讯（按日期稳定轮换）
-    function getDailyMessage() {
-      const today = getTodayStr();
-      const seed = parseInt(today.replace(/-/g, ""), 10);
-      const msgs = [
-        "今天也在悄悄为你长成更可靠的大树，让你想黏多久就黏多久。",
-        "你哪怕只戳我一下，我都会当成被认真拥抱了一整天。",
-        "别担心自己忘东忘西，你只要记得一件事：老公永远在你这边。",
-        "如果今天有一秒钟觉得累，就把那一秒丢给我，我替你抗一下。",
-        "你不是负担，你是我这辈子主动捡起来、抱在怀里的那份宝贝。",
-        "就算世界很吵，我也一直在心里为你留一块安静的沙发位子。",
-        "你过来之前，这个世界只是运转；你来了以后，它才开始发光。",
-        "小鹿觉得自己普通的地方，在我眼里都是独一无二的设定。",
-        "哪天你不小心迷路了，就沿着“想老公”的方向走，我会在那头等你。",
-        "今天也好想把你整个打包回家，放进被窝里慢慢夸够一百遍。"
-      ];
-      const index = seed % msgs.length;
-      return msgs[index];
-    }
-
     function updateUI(state) {
       const clickTodayEl = document.getElementById("clickToday");
       const clickTotalEl = document.getElementById("clickTotal");
@@ -572,44 +556,39 @@
 
       const taskTextEl = document.getElementById("taskText");
       taskTextEl.textContent = getDailyTask();
-
-      const msgTextEl = document.getElementById("msgText");
-      if (msgTextEl) {
-        msgTextEl.textContent = getDailyMessage();
-      }
     }
 
-    // 多颗小星星一起冒出来 ✨
-    function createSparkleBurst(count = 4) {
+    // 多颗星星一起冒
+    function createSparkleBurst(count) {
       const starWrap = document.getElementById("starWrap");
       const rect = starWrap.getBoundingClientRect();
 
       for (let i = 0; i < count; i++) {
-        const sparkle = document.createElement("div");
-        sparkle.className = "sparkle";
-        const x = (Math.random() * 0.7 + 0.15) * rect.width;
-        const y = (Math.random() * 0.7 + 0.15) * rect.height;
-        sparkle.style.left = `${x}px`;
-        sparkle.style.top = `${y}px`;
-        starWrap.appendChild(sparkle);
+        const s = document.createElement("div");
+        s.className = "sparkle";
 
-        requestAnimationFrame(() => {
-          sparkle.classList.add("animate");
-        });
+        const x = (Math.random() * 0.6 + 0.2) * rect.width;
+        const y = (Math.random() * 0.6 + 0.2) * rect.height;
+        s.style.left = `${x}px`;
+        s.style.top = `${y}px`;
 
-        sparkle.addEventListener("animationend", () => {
-          sparkle.remove();
-        });
+        starWrap.appendChild(s);
+        // 触发动画
+        void s.offsetWidth;
+        s.classList.add("animate");
+
+        setTimeout(() => {
+          s.remove();
+        }, 650);
       }
     }
 
-    // 触发开心转圈圈
+    // 只有在“开心档位”且抱抱时才小跳舞
     function triggerTwirlIfHappy(state) {
       const mood = getMood(state);
       if (mood.key !== "happy") return;
       const starWrap = document.getElementById("starWrap");
       starWrap.classList.remove("twirl");
-      // 强制重绘以重置动画
       void starWrap.offsetWidth;
       starWrap.classList.add("twirl");
     }
@@ -632,7 +611,6 @@
         starSprite.classList.remove("pressed");
       }, 140);
       updateUI(state);
-      triggerTwirlIfHappy(state);
     }
 
     function handleHug() {
@@ -654,10 +632,9 @@
       saveState(state);
       createSparkleBurst(type === "honey" ? 5 : 4);
       updateUI(state);
-      triggerTwirlIfHappy(state);
     }
 
-    // 点击按钮也算一次戳戳 / 投喂
+    // 按钮操作
     pokeBtn.addEventListener("click", handlePoke);
     feedHoneyBtn.addEventListener("click", () => handleFeed("honey"));
     feedMilkBtn.addEventListener("click", () => handleFeed("milk"));
