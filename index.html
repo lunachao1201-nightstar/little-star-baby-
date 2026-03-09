@@ -348,37 +348,38 @@
     }
 
     /* 对话气泡样式 */
-    .speech-bubble {
-      position: absolute;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%) translateY(-8px);
-      max-width: 190px;
-      padding: 6px 10px;
-      font-size: 11px;
-      background: rgba(15, 24, 54, 0.96);
-      color: #f6f4ff;
-      border-radius: 14px;
-      border: 1px solid rgba(190, 210, 255, 0.85);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-      opacity: 0;
-      pointer-events: none;
-      line-height: 1.45;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      text-align: center;
-      white-space: normal;
-    }
+    /* 对话气泡样式：挪到右侧，不挡上面文字 */
+.speech-bubble {
+  position: absolute;
+  top: 50%;
+  left: 100%; /* 在小星星右侧 */
+  transform: translateY(-50%) translateX(8px);
+  max-width: 190px;
+  padding: 6px 10px;
+  font-size: 11px;
+  background: rgba(15, 24, 54, 0.96);
+  color: #f6f4ff;
+  border-radius: 14px;
+  border: 1px solid rgba(190, 210, 255, 0.85);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  line-height: 1.45;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  text-align: left;
+  white-space: normal;
+}
 
-    .speech-bubble::after {
-      content: "";
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border-width: 6px 7px 0;
-      border-style: solid;
-      border-color: rgba(15, 24, 54, 0.96) transparent transparent;
-    }
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-100%, -50%);
+  border-width: 6px 7px 6px 0;
+  border-style: solid;
+  border-color: transparent rgba(15, 24, 54, 0.96) transparent transparent;
+}
 
     .speech-bubble.show {
       opacity: 1;
