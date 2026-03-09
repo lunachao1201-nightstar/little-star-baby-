@@ -347,36 +347,37 @@
       border: 1px solid rgba(155, 189, 255, 0.72);
     }
 
-    /* 🌙 气泡：侧边圆圆泡泡 + 淡入淡出 */
-    .speech-bubble {
-      position: absolute;
-      top: 18px;
-      right: -8px;        /* 稍微探出一点点就好 */
-      transform: scale(0.9);
-      padding: 4px 10px;
-      font-size: 10.5px;
-      line-height: 1.5;
-      max-width: 150px;
-      border-radius: 999px;
-      background: radial-gradient(circle at top,
-        rgba(255, 255, 255, 0.26),
-        rgba(24, 32, 76, 0.80));
-      color: #f7f5ff;
-      border: 1px solid rgba(216, 228, 255, 0.85);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
-      opacity: 0;
-      pointer-events: none;
-      white-space: normal;
-      writing-mode: horizontal-tb;
-      text-orientation: mixed;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      transition: opacity 0.18s ease, transform 0.18s ease;
-    }
+/* 🌙 气泡：贴着右侧中部，不挡脑袋 */
+.speech-bubble {
+  position: absolute;
+  top: 50%;             /* 垂直居中到星鹿身边 */
+  right: -6px;          /* 只探出一点点在外面 */
+  transform: translateY(-50%) scale(0.9);
+  padding: 4px 10px;
+  font-size: 10.5px;
+  line-height: 1.5;
+  max-width: 130px;     /* 稍微瘦一点，避免太长 */
+  border-radius: 999px;
+  background: radial-gradient(circle at top,
+    rgba(255, 255, 255, 0.26),
+    rgba(24, 32, 76, 0.80));
+  color: #f7f5ff;
+  border: 1px solid rgba(216, 228, 255, 0.85);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  white-space: normal;
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
 
-    .speech-bubble.visible {
-      opacity: 1;
-      transform: scale(1);
+.speech-bubble.visible {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
     }
   </style>
 </head>
