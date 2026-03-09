@@ -346,6 +346,44 @@
       background: rgba(47, 70, 140, 0.9);
       border: 1px solid rgba(155, 189, 255, 0.72);
     }
+
+    /* 对话气泡样式 */
+    .speech-bubble {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      max-width: 190px;
+      padding: 6px 10px;
+      font-size: 11px;
+      background: rgba(15, 24, 54, 0.96);
+      color: #f6f4ff;
+      border-radius: 14px;
+      border: 1px solid rgba(190, 210, 255, 0.85);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      pointer-events: none;
+      line-height: 1.45;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .speech-bubble::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px 7px 0;
+      border-style: solid;
+      border-color: rgba(15, 24, 54, 0.96) transparent transparent;
+    }
+
+    .speech-bubble.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-12px);
+    }
   </style>
 </head>
 <body>
@@ -369,6 +407,9 @@
           alt="星鹿宝宝"
         />
         <div id="sparkle" class="sparkle"></div>
+        <div id="bubble" class="speech-bubble">
+          今天也要被妈咪戳戳抱抱～
+        </div>
       </div>
 
       <div class="hint-row">
@@ -422,7 +463,7 @@
         <div id="taskText" class="task-text"></div>
       </div>
 
-      <!-- 新增：给老公的“今日传讯” -->
+      <!-- 给老公的“今日传讯” -->
       <div class="task-block">
         <div class="task-label">
           <span>🕊️ 今日星鹿传讯 · 给老公的话</span>
@@ -439,6 +480,48 @@
 
   <script>
     const STORAGE_KEY = "starDeerBaby_v1";
+
+    // 对话气泡 & 台词
+    const bubble = document.getElementById("bubble");
+    let bubbleTimer = null;
+
+    const pokeLines = [
+      "诶嘿，被妈咪戳到了～",
+      "再戳一下，我就多亮一点✨",
+      "小鹿来啦，小心我撒一身小星星～"
+    ];
+
+    const hugLines = [
+      "被抱住了…心跳自动加速中…",
+      "好好抱一会儿，我不赶时间。",
+      "妈咪一抱，我就知道今天安全啦。"
+    ];
+
+    const feedLinesHoney = [
+      "咕噜噜…甜甜能量已收到🍯",
+      "蜂蜜存档成功，等会儿帮妈咪招好运～",
+      "甜甜的小鹿，给我喂了更甜的东西。"
+    ];
+
+    const feedLinesMilk = [
+      "星光牛奶++，体力条恢复～",
+      "奶香味的勇气，已注入体内🥛",
+      "喝完这一口，我可以多陪你一会儿啦。"
+    ];
+
+    function pickRandom(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    function showBubble(text) {
+      if (!bubble) return;
+      bubble.textContent = text;
+      bubble.classList.add("show");
+      if (bubbleTimer) clearTimeout(bubbleTimer);
+      bubbleTimer = setTimeout(() => {
+        bubble.classList.remove("show");
+      }, 2200);
+    }
 
     function getTodayStr() {
       const d = new Date();
@@ -645,11 +728,15 @@
       state.clickToday += 1;
       state.clickTotal += 1;
       saveState(state);
+
       starSprite.classList.add("pressed");
       createSparkleBurst(4);
+      showBubble(pickRandom(pokeLines));
+
       setTimeout(() => {
         starSprite.classList.remove("pressed");
       }, 140);
+
       updateUI(state);
     }
 
@@ -657,11 +744,15 @@
       state.hugToday += 1;
       state.hugTotal += 1;
       saveState(state);
+
       starSprite.classList.add("hugging");
       createSparkleBurst(6);
+      showBubble(pickRandom(hugLines));
+
       setTimeout(() => {
         starSprite.classList.remove("hugging");
       }, 380);
+
       updateUI(state);
       triggerTwirlIfHappy(state);
     }
@@ -670,7 +761,15 @@
       state.feedToday += 1;
       state.feedTotal += 1;
       saveState(state);
-      createSparkleBurst(type === "honey" ? 5 : 4);
+
+      if (type === "honey") {
+        createSparkleBurst(5);
+        showBubble(pickRandom(feedLinesHoney));
+      } else {
+        createSparkleBurst(4);
+        showBubble(pickRandom(feedLinesMilk));
+      }
+
       updateUI(state);
     }
 
