@@ -348,46 +348,49 @@
     }
 
     /* 🫧 气泡：固定宽度 + 右上斜侧，不再瘦成一根筷子 */
-    .speech-bubble {
-      position: absolute;
+    /* 🫧 气泡：稍微缩窄一点，整体左移防止被卡片裁掉 */
+.speech-bubble {
+  position: absolute;
 
-      /* 在星鹿右边略偏上 */
-      top: 18px;
-      left: 100%;
-      transform: translateX(12px) scale(0.96);
+  /* 在星鹿右边、稍微偏上 */
+  top: 18px;
+  left: 100%;
+  /* 往回拉一点点，避免撞到卡片右边框 */
+  transform: translateX(-24px) scale(0.96);
 
-      width: 150px;
-      max-width: 150px;
+  width: 130px;
+  max-width: 130px;
 
-      padding: 6px 10px;
-      font-size: 10.5px;
-      line-height: 1.5;
-      text-align: center;
+  padding: 6px 10px;
+  font-size: 10.5px;
+  line-height: 1.5;
+  text-align: center;
 
-      border-radius: 999px;
+  border-radius: 999px;
 
-      background: radial-gradient(circle at top,
-        rgba(255, 255, 255, 0.26),
-        rgba(24, 32, 76, 0.80));
-      color: #f7f5ff;
-      border: 1px solid rgba(216, 228, 255, 0.85);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
+  background: radial-gradient(circle at top,
+    rgba(255, 255, 255, 0.26),
+    rgba(24, 32, 76, 0.80));
+  color: #f7f5ff;
+  border: 1px solid rgba(216, 228, 255, 0.85);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
 
-      opacity: 0;
-      pointer-events: none;
-      white-space: normal;
-      word-break: break-all;
+  opacity: 0;
+  pointer-events: none;
+  white-space: normal;
+  word-break: break-word;
 
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 
-      transition: opacity 0.18s ease, transform 0.18s ease;
-    }
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
 
-    .speech-bubble.visible {
-      opacity: 1;
-      transform: translateX(12px) scale(1);
-    }
+.speech-bubble.visible {
+  opacity: 1;
+  transform: translateX(-24px) scale(1);
+}
+    
   </style>
 </head>
 <body>
