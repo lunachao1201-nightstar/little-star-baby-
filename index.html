@@ -347,12 +347,14 @@
       border: 1px solid rgba(155, 189, 255, 0.72);
     }
 
-/* 🌙 气泡：在星鹿头顶上方，不挡脸不挡标题 */
+/* 🫧 气泡：在星鹿右上斜侧的小空地里 */
 .speech-bubble {
   position: absolute;
-  top: -14px;               /* 控制与圆圈的距离，觉得高可以改成 -10 / -8 */
-  left: 50%;                /* 水平居中对齐星鹿 */
-  transform: translateX(-50%) scale(0.9);
+  /* 决定“垂直高度”：越大越靠下 */
+  top: 30px;
+  /* 紧贴星鹿容器右边，再往右挪一点点 */
+  left: 100%;
+  transform: translateX(8px) scale(0.9);
 
   padding: 4px 12px;
   font-size: 10.5px;
@@ -360,7 +362,7 @@
   max-width: 160px;
   border-radius: 999px;
 
-  /* 泡泡质感：半透明 + 一点光晕 */
+  /* 半透明小泡泡 + 微微发光 */
   background: radial-gradient(circle at top,
     rgba(255, 255, 255, 0.26),
     rgba(24, 32, 76, 0.80));
@@ -380,7 +382,7 @@
 
 .speech-bubble.visible {
   opacity: 1;
-  transform: translateX(-50%) scale(1);
+  transform: translateX(8px) scale(1);
 }
     }
   </style>
