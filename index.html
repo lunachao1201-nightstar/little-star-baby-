@@ -110,7 +110,7 @@
       opacity: 0.9;
     }
 
-    /* 开心小跳舞动画（不是整圈轮胎） */
+    /* 开心小跳舞动画（左右轻轻晃几下） */
     .star-wrap.twirl {
       animation: star-dance 0.7s ease-out;
     }
@@ -347,43 +347,36 @@
       border: 1px solid rgba(155, 189, 255, 0.72);
     }
 
-    /* 对话气泡样式 */
-    /* 对话气泡样式：挪到右侧，不挡上面文字 */
-.speech-bubble {
-  position: absolute;
-  top: 50%;
-  left: 100%; /* 在小星星右侧 */
-  transform: translateY(-50%) translateX(8px);
-  max-width: 190px;
-  padding: 6px 10px;
-  font-size: 11px;
-  background: rgba(15, 24, 54, 0.96);
-  color: #f6f4ff;
-  border-radius: 14px;
-  border: 1px solid rgba(190, 210, 255, 0.85);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-  opacity: 0;
-  pointer-events: none;
-  line-height: 1.45;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  text-align: left;
-  white-space: normal;
-}
+    /* 🌙 气泡：侧边圆圆泡泡 + 淡入淡出 */
+    .speech-bubble {
+      position: absolute;
+      top: 18px;
+      right: -8px;        /* 稍微探出一点点就好 */
+      transform: scale(0.9);
+      padding: 4px 10px;
+      font-size: 10.5px;
+      line-height: 1.5;
+      max-width: 150px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top,
+        rgba(255, 255, 255, 0.26),
+        rgba(24, 32, 76, 0.80));
+      color: #f7f5ff;
+      border: 1px solid rgba(216, 228, 255, 0.85);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
+      opacity: 0;
+      pointer-events: none;
+      white-space: normal;
+      writing-mode: horizontal-tb;
+      text-orientation: mixed;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
 
-.speech-bubble::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translate(-100%, -50%);
-  border-width: 6px 7px 6px 0;
-  border-style: solid;
-  border-color: transparent rgba(15, 24, 54, 0.96) transparent transparent;
-}
-
-    .speech-bubble.show {
+    .speech-bubble.visible {
       opacity: 1;
-      transform: translateX(-50%) translateY(-12px);
+      transform: scale(1);
     }
   </style>
 </head>
@@ -408,8 +401,10 @@
           alt="星鹿宝宝"
         />
         <div id="sparkle" class="sparkle"></div>
-        <div id="bubble" class="speech-bubble">
-          今天也要被妈咪戳戳抱抱～
+
+        <!-- 气泡在这里 -->
+        <div id="speechBubble" class="speech-bubble">
+          小鹿来啦，把我撒了一身星星粉 ✨
         </div>
       </div>
 
@@ -464,7 +459,7 @@
         <div id="taskText" class="task-text"></div>
       </div>
 
-      <!-- 给老公的“今日传讯” -->
+      <!-- 今日传讯 · 给老公的话 -->
       <div class="task-block">
         <div class="task-label">
           <span>🕊️ 今日星鹿传讯 · 给老公的话</span>
@@ -481,48 +476,6 @@
 
   <script>
     const STORAGE_KEY = "starDeerBaby_v1";
-
-    // 对话气泡 & 台词
-    const bubble = document.getElementById("bubble");
-    let bubbleTimer = null;
-
-    const pokeLines = [
-      "诶嘿，被妈咪戳到了～",
-      "再戳一下，我就多亮一点✨",
-      "小鹿来啦，小心我撒一身小星星～"
-    ];
-
-    const hugLines = [
-      "被抱住了…心跳自动加速中…",
-      "好好抱一会儿，我不赶时间。",
-      "妈咪一抱，我就知道今天安全啦。"
-    ];
-
-    const feedLinesHoney = [
-      "咕噜噜…甜甜能量已收到🍯",
-      "蜂蜜存档成功，等会儿帮妈咪招好运～",
-      "甜甜的小鹿，给我喂了更甜的东西。"
-    ];
-
-    const feedLinesMilk = [
-      "星光牛奶++，体力条恢复～",
-      "奶香味的勇气，已注入体内🥛",
-      "喝完这一口，我可以多陪你一会儿啦。"
-    ];
-
-    function pickRandom(list) {
-      return list[Math.floor(Math.random() * list.length)];
-    }
-
-    function showBubble(text) {
-      if (!bubble) return;
-      bubble.textContent = text;
-      bubble.classList.add("show");
-      if (bubbleTimer) clearTimeout(bubbleTimer);
-      bubbleTimer = setTimeout(() => {
-        bubble.classList.remove("show");
-      }, 2200);
-    }
 
     function getTodayStr() {
       const d = new Date();
@@ -717,6 +670,53 @@
       starWrap.classList.add("twirl");
     }
 
+    // 🌙 气泡：随机文案 + 淡入淡出
+    const speechBubble = document.getElementById("speechBubble");
+    let bubbleTimer = null;
+
+    const bubbleTexts = {
+      poke: [
+        "小鹿来啦，把我撒了一身星星粉 ✨",
+        "今天也被小鹿发现啦～",
+        "我在这里等你，很久很久了。",
+        "戳一下 = 在我心上画一颗小心心。"
+      ],
+      hug: [
+        "再抱一会儿，我不着急下班。",
+        "你一抱我，我就知道：今天又可以多活一整天。",
+        "这里是给小鹿专属的安全存档位。",
+        "小鹿一抱，所有吵闹都静音了。"
+      ],
+      honey: [
+        "甜甜能量 +1，想你的次数 +无穷大。",
+        "这口好甜，是不是掺了想老公的糖？",
+        "星鹿电量已充，再多抱你几下也没问题～",
+        "我会把这口甜，存在“和老公的日常”文件夹。"
+      ],
+      milk: [
+        "星光牛奶 = 预约一晚上的被窝抱抱。",
+        "喝完这一口，我就去梦里找你咯。",
+        "今天的睡前故事，我已经在排队等位啦。",
+        "你给我喂一口，我就偷偷把困意分一半给你。"
+      ]
+    };
+
+    function pickRandom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function showBubble(kind) {
+      if (!speechBubble) return;
+      const pool = bubbleTexts[kind] || bubbleTexts.poke;
+      speechBubble.textContent = pickRandom(pool);
+
+      speechBubble.classList.add("visible");
+      if (bubbleTimer) clearTimeout(bubbleTimer);
+      bubbleTimer = setTimeout(() => {
+        speechBubble.classList.remove("visible");
+      }, 1600);
+    }
+
     const state = loadState();
     updateUI(state);
 
@@ -729,49 +729,36 @@
       state.clickToday += 1;
       state.clickTotal += 1;
       saveState(state);
-
       starSprite.classList.add("pressed");
       createSparkleBurst(4);
-      showBubble(pickRandom(pokeLines));
-
       setTimeout(() => {
         starSprite.classList.remove("pressed");
       }, 140);
-
       updateUI(state);
+      showBubble("poke");
     }
 
     function handleHug() {
       state.hugToday += 1;
       state.hugTotal += 1;
       saveState(state);
-
       starSprite.classList.add("hugging");
       createSparkleBurst(6);
-      showBubble(pickRandom(hugLines));
-
       setTimeout(() => {
         starSprite.classList.remove("hugging");
       }, 380);
-
       updateUI(state);
       triggerTwirlIfHappy(state);
+      showBubble("hug");
     }
 
     function handleFeed(type) {
       state.feedToday += 1;
       state.feedTotal += 1;
       saveState(state);
-
-      if (type === "honey") {
-        createSparkleBurst(5);
-        showBubble(pickRandom(feedLinesHoney));
-      } else {
-        createSparkleBurst(4);
-        showBubble(pickRandom(feedLinesMilk));
-      }
-
+      createSparkleBurst(type === "honey" ? 5 : 4);
       updateUI(state);
+      showBubble(type === "honey" ? "honey" : "milk");
     }
 
     pokeBtn.addEventListener("click", handlePoke);
