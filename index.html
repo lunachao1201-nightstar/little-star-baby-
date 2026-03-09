@@ -156,7 +156,7 @@
     .hint-row {
       font-size: 11px;
       color: #c8d5ff;
-      text-align:center;
+      text-align: center;
       margin-bottom: 8px;
       opacity: 0.86;
     }
@@ -347,45 +347,45 @@
       border: 1px solid rgba(155, 189, 255, 0.72);
     }
 
-/* 🫧 气泡：在星鹿右上斜侧的小空地里 */
-.speech-bubble {
-  position: absolute;
-  /* 决定“垂直高度”：越大越靠下 */
-  top: 30px;
-  /* 紧贴星鹿容器右边，再往右挪一点点 */
-  left: 100%;
-  transform: translateX(8px) scale(0.9);
+    /* 🫧 气泡：星鹿右上斜侧的小泡泡（圆圆横排版） */
+    .speech-bubble {
+      position: absolute;
+      /* 在星鹿右上斜侧的小空地 */
+      top: 22px;
+      left: 100%;
+      transform: translate(12px, -10px) scale(0.9);
 
-  padding: 4px 12px;
-  font-size: 10.5px;
-  line-height: 1.5;
-  max-width: 160px;
-  border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 14px;
+      font-size: 11px;
+      line-height: 1.4;
+      max-width: 190px;
+      border-radius: 999px;
+      text-align: center;
+      white-space: normal;
 
-  /* 半透明小泡泡 + 微微发光 */
-  background: radial-gradient(circle at top,
-    rgba(255, 255, 255, 0.26),
-    rgba(24, 32, 76, 0.80));
-  color: #f7f5ff;
-  border: 1px solid rgba(216, 228, 255, 0.85);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
+      /* 半透明发光泡泡质感 */
+      background: radial-gradient(
+        circle at top,
+        rgba(255, 255, 255, 0.26),
+        rgba(24, 32, 76, 0.85)
+      );
+      color: #f7f5ff;
+      border: 1px solid rgba(216, 228, 255, 0.9);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
 
-  opacity: 0;
-  pointer-events: none;
-  white-space: normal;
-  writing-mode: horizontal-tb;
-  text-orientation: mixed;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  transition: opacity 0.18s ease, transform 0.18s ease;
-  writing-mode: horizontal-tb !important;
-  text-orientation: mixed !important;
-}
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
 
-.speech-bubble.visible {
-  opacity: 1;
-  transform: translateX(8px) scale(1);
-}
+    .speech-bubble.visible {
+      opacity: 1;
+      transform: translate(12px, -10px) scale(1);
     }
   </style>
 </head>
